@@ -1,24 +1,61 @@
----
-title: Create a project
-description: Learn how to create a new Expo project.
-hideTOC: true
----
+import React, { useState } from 'react';
+import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
+import firebase from './firebaseConfig'; // Conectar con Firebase
 
-import { Terminal } from '~/ui/components/Snippet';
+const Login = ({ navigation }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-System requirements:
+  const handleLogin = () => {
+    firebase.auth().signInWithEmailAndPassword(email, password)
+      .then(userCredential => {
+        navigation.navigate('HomeScreen'); // Ir a la pantalla principal
+      })
+      .catch(error => {
+        alert('Error al iniciar sesión: ' + error.message);
+      });
+  };
 
-- [Node.js (LTS)](https://nodejs.org/en/).
-- macOS, Windows (Powershell and [WSL 2](https://expo.fyi/wsl)), and Linux are supported.
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Bienvenido a Renacencia</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Correo Electrónico"
+        value={email}
+        onChangeText={setEmail}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Contraseña"
+        secureTextEntry
+        value={password}
+        onChangeText={setPassword}
+      />
+      <Button title="Iniciar Sesión" onPress={handleLogin} />
+    </View>
+  );
+};
 
-We recommend starting with the default project created by `create-expo-app`. The default project includes example code to help you get started.
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 16,
+  },
+  title: {
+    fontSize: 24,
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 12,
+    padding: 8,
+  },
+});
 
-To create a new project, run the following command:
+export default Login;
 
-<Terminal cmd={['$ npx create-expo-app@latest']} />
-
-> You can choose a different template by adding the [`--template` option](/more/create-expo/#--template).
-
-## Next step
-
-You have a project. Now it's time to set up your development environment so that you can start developing.
