@@ -90,12 +90,13 @@ android {
       if (!System.getenv("ANDROID_UNSIGNED")) {
         signingConfig signingConfigs.release
       }
-      def shouldUploadCrashlytics = System.getenv("EAS_BUILD") != null
+      def shouldUploadCrashlytics = false
+      // def shouldUploadCrashlytics = System.getenv("EAS_BUILD") != null
       firebaseCrashlytics {
         nativeSymbolUploadEnabled shouldUploadCrashlytics
         mappingFileUploadEnabled shouldUploadCrashlytics
 
-        unstrippedNativeLibsDir file("${buildDir}/intermediates/merged_native_libs/release/out/lib")
+        // unstrippedNativeLibsDir file("${buildDir}/intermediates/merged_native_libs/release/out/lib")
       }
     }
   }
